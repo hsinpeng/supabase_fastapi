@@ -1,2 +1,2 @@
 # supabase_fastapi
-Backend of FastAPI and Supabase
+An API Server with FastAPI and Supabase
