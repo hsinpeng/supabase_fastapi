@@ -20,10 +20,12 @@ class Settings():
     reload:bool = parse_boolean(os.getenv("RELOAD"))
 
     # storage
-    local_storage_path: str = os.getenv("LOCAL_STORAGE_PATH")
+    temporary_storage_path: str = os.getenv("TEMPORARY_STORAGE_PATH")
     static_storage_path: str = os.getenv("STATIC_STORAGE_PATH")
 
     # supabase
+    supabase_url: str = os.getenv("SUPABASE_URL")
+    supabase_key: str = os.getenv("SUPABASE_KEY")
 
     # jwt
     access_token_secret:str = os.getenv("ACCESS_TOKEN_SECRET")

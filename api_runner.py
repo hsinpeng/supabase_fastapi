@@ -1,6 +1,6 @@
 import time
-from utilities.database import init_db_storage, close_db_storage
 from utilities.config import get_settings
+from utilities.tools import make_folder, remove_folder
 from api.infor import router as infor_router
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -8,15 +8,17 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
+settings = get_settings()
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # replacement of @app.on_event("startup")
     print("ASYNC startup: Initializing resources...")
-    await init_db_storage()
+    await make_folder(settings.temporary_storage_path)
     yield
     # replacement of @app.on_event("shutdown")
     print("ASYNC shutdown: Releasing resources...")
-    await close_db_storage()
+    await remove_folder(settings.temporary_storage_path)
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(infor_router)
@@ -45,6 +47,5 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 # Static files access
-settings = get_settings()
 Path(settings.static_storage_path).mkdir(parents=True, exist_ok=True)
 app.mount("/static_files", StaticFiles(directory=settings.static_storage_path), name="static_files")
