@@ -45,6 +45,7 @@ def sign_out_user(supabase:Client)->bool:
         print(f"An error occurred during sign out: {e}")
         return False
 
+
 def display_session(supabase:Client)->bool:
     # Retrieve the session data
     response = supabase.auth.get_session()
